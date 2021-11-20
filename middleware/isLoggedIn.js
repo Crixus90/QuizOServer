@@ -1,5 +1,5 @@
 const Session = require("../models/Session.model");
-
+//test
 module.exports = (req, res, next) => {
   // checks if the user is logged in when trying to access a specific page
   if (!req.headers.authorization || req.headers.authorization === "null") {
