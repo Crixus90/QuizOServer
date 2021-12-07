@@ -35,7 +35,9 @@ router.get("/session", (req, res) => {
 });
 
 router.post("/signup", isLoggedOut, (req, res) => {
-  const { username, password } = req.body;
+
+  const { username, password, country, score } = req.body;
+
 
   if (!username) {
     return res
@@ -47,6 +49,10 @@ router.post("/signup", isLoggedOut, (req, res) => {
     return res.status(400).json({
       errorMessage: "Your password needs to be at least 8 characters long.",
     });
+  }
+
+  if (!country) {
+    return res.status(400).json({ errorMessage: "Please enter your country" });
   }
 
   //   ! This use case is using a regular expression to control for special characters and min length
@@ -77,6 +83,8 @@ router.post("/signup", isLoggedOut, (req, res) => {
         return User.create({
           username,
           password: hashedPassword,
+          country,
+          score,
         });
       })
       .then((user) => {
@@ -88,6 +96,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
         });
       })
       .catch((error) => {
+        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
           return res.status(400).json({ errorMessage: error.message });
         }
