@@ -8,7 +8,9 @@ const userSchema = new Schema(
       unique: true,
     },
     password: String,
+
     score: { type: Number, default: 0 },
+
     country: String,
   },
   {
