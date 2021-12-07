@@ -12,7 +12,10 @@ const userSchema = new Schema(
       unique: true,
     },
     password: String,
-    score: Number,
+    score: {
+      type: Number,
+      default: 0,
+    },
     country: String,
   },
   {
