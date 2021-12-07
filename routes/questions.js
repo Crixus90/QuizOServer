@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const Questions = require("../models/Questions.model");
 
+router.get("/", (req, res) => {
+  console.log("hi");
+  Questions.find({ category }).then().catch();
+});
+
 router.post("/", (req, res) => {
   const { category, question, answerA, answerB, answerC, answerD } = req.body;
 
