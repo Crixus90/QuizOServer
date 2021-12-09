@@ -35,9 +35,7 @@ router.get("/session", (req, res) => {
 });
 
 router.post("/signup", isLoggedOut, (req, res) => {
-
   const { username, password, country, score } = req.body;
-
 
   if (!username) {
     return res
@@ -161,6 +159,25 @@ router.delete("/logout", isLoggedIn, (req, res) => {
   Session.findByIdAndDelete(req.headers.authorization)
     .then(() => {
       res.status(200).json({ message: "User was logged out" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ errorMessage: err.message });
+    });
+});
+
+router.delete("/delete", isLoggedIn, (req, res) => {
+  const stringId = req.user._id.toString();
+  User.findByIdAndDelete(stringId)
+    .then(() => {
+      Session.findByIdAndDelete(req.headers.authorization)
+        .then(() => {
+          res.json(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ errorMessage: err.message });
+        });
     })
     .catch((err) => {
       console.log(err);

@@ -1,22 +1,20 @@
 const router = require("express").Router();
 const Questions = require("../models/Questions.model");
 
+const isLoggedOut = require("../middleware/isLoggedOut");
+const isLoggedIn = require("../middleware/isLoggedIn");
+
 router.get("/", (req, res) => {
-  console.log(req.query);
-  console.log("hi");
   Questions.find({ category: req.query.category })
     .then((questions) => {
-      console.dir(
-        questions.map((el) => el.toJSON()),
-        { depth: null }
-      );
+      res.json({ questions });
     })
     .catch((e) => {
       res.status(500).json({ errorMessage: "There was a server error!" });
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, (req, res) => {
   const { category, question, answerA, answerB, answerC, answerD } = req.body;
 
   //   console.log(category, question, answerA, answerB, answerC, answerD);
