@@ -155,6 +155,12 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
 });
 
+router.post("/addpoints", (req, res) => {
+  const { points } = req.body.user;
+  console.log(points);
+  User.findOneAndUpdate;
+});
+
 router.delete("/logout", isLoggedIn, (req, res) => {
   Session.findByIdAndDelete(req.headers.authorization)
     .then(() => {
