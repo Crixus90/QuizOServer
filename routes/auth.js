@@ -94,7 +94,6 @@ router.post("/signup", isLoggedOut, (req, res) => {
         });
       })
       .catch((error) => {
-        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
           return res.status(400).json({ errorMessage: error.message });
         }
@@ -157,8 +156,14 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
 router.post("/addpoints", (req, res) => {
   const { points } = req.body.user;
-  console.log(points);
-  User.findOneAndUpdate;
+  const { _id } = req.body.user.user;
+  User.findByIdAndUpdate(_id, { score: points })
+    .then((updatedUser) => {
+      res.json(true);
+    })
+    .catch((e) => {
+      res.status(500).json({ errorMessage: "There was a server error!" });
+    });
 });
 
 router.delete("/logout", isLoggedIn, (req, res) => {
@@ -167,7 +172,6 @@ router.delete("/logout", isLoggedIn, (req, res) => {
       res.status(200).json({ message: "User was logged out" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ errorMessage: err.message });
     });
 });
@@ -181,12 +185,10 @@ router.delete("/delete", isLoggedIn, (req, res) => {
           res.json(true);
         })
         .catch((err) => {
-          console.log(err);
           res.status(500).json({ errorMessage: err.message });
         });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ errorMessage: err.message });
     });
 });
