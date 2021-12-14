@@ -157,7 +157,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 router.post("/addpoints", (req, res) => {
   const { points } = req.body.user;
   const { _id } = req.body.user.user;
-  User.findByIdAndUpdate(_id, { score: points })
+  User.findByIdAndUpdate(_id, { $inc: { score: points } })
     .then((updatedUser) => {
       res.json(true);
     })
