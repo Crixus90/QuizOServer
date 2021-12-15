@@ -5,10 +5,11 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/", isLoggedIn, (req, res) => {
-  User.find({}).then((allUsers) => {
-    console.log(allUsers);
-    res.json({ users: allUsers });
-  });
+  User.find({})
+    .sort({ score: -1 })
+    .then((allUsers) => {
+      res.json({ users: allUsers });
+    });
 });
 
 module.exports = router;
